@@ -9,3 +9,19 @@ services:
       POSTGRES_DB: entity_search
     ports:
       - "5432:5432"
+    volumes:
+      - "./postgres.conf:/etc/postgresql/postgresql.conf"
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+
+
+  pulsar:
+    image: apachepulsar/pulsar:2.7.1
+    hostname: pulsar
+    command: bin/pulsar standalone
+    ports:
+      - "8080:8080"
+      - "6650:6650"
+    volumes:
+      - "./data/:/pulsar/data"
+      - "./io_connectors/pulsar-io-debezium-postgres-2.7.1.nar:/pulsar/connectors/pulsar-io-debezium-postgres-2.7.1.nar"
+      - "./debezium-postgres-source-config.yaml:/pulsar/conf/debezium-postgres-source-config.yaml"
