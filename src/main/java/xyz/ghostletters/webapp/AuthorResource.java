@@ -1,4 +1,4 @@
-package xyz.ghostletters;
+package xyz.ghostletters.webapp;
 
 import xyz.ghostletters.webapp.entity.Author;
 import xyz.ghostletters.webapp.entity.Book;

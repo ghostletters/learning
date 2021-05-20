@@ -1,0 +1,24 @@
+{
+  "before": null,
+  "after": {
+    "id": 1,
+    "name": "hello world",
+    "pages": 400,
+    "author_id": 3
+  },
+  "source": {
+    "version": "1.0.0.Final",
+    "connector": "postgresql",
+    "name": "foobar",
+    "ts_ms": 1621270002844,
+    "snapshot": "false",
+    "db": "entity_search",
+    "schema": "public",
+    "table": "book",
+    "txId": 595,
+    "lsn": 23751320,
+    "xmin": null
+  },
+  "op": "u",
+  "ts_ms": 1621270002849
+}
