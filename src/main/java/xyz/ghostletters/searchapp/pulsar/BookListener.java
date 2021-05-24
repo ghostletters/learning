@@ -1,24 +1,31 @@
 package xyz.ghostletters.searchapp.pulsar;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.runtime.StartupEvent;
-import org.apache.pulsar.client.api.Consumer;
-import org.apache.pulsar.client.api.Message;
 import org.apache.pulsar.client.api.MessageListener;
 import org.apache.pulsar.client.api.PulsarClientException;
+import xyz.ghostletters.searchapp.eventchange.BookEvent;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class BookListener {
 
     private static final String topicName = "persistent://public/default/foobar.public.book";
 
+    @Inject
+    ObjectMapper objectMapper;
 
     MessageListener messageListener = (consumer, msg) -> {
         try {
             // Do something with the message
-            System.out.println("Message received: " + new String(msg.getData()));
+            String jsonPayload = new String(msg.getData());
+            System.out.println("Message received: " + jsonPayload);
+
+            BookEvent bookEvent = objectMapper.readValue(jsonPayload, BookEvent.class);
+            System.out.println(bookEvent.getAfter().getName());
 
             // Acknowledge the message so that it can be deleted by the message broker
             consumer.acknowledge(msg);
