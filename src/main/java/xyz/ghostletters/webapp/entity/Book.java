@@ -38,4 +38,8 @@ public class Book {
     public void setPages(int pages) {
         this.pages = pages;
     }
+
+    public Long getId() {
+        return id;
+    }
 }

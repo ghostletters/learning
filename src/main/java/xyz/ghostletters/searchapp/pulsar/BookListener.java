@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.runtime.StartupEvent;
 import org.apache.pulsar.client.api.MessageListener;
 import org.apache.pulsar.client.api.PulsarClientException;
+import xyz.ghostletters.searchapp.elasticsearch.BookIndexClient;
 import xyz.ghostletters.searchapp.eventchange.BookEvent;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -18,6 +19,9 @@ public class BookListener {
     @Inject
     ObjectMapper objectMapper;
 
+    @Inject
+    BookIndexClient bookIndexClient;
+
     MessageListener messageListener = (consumer, msg) -> {
         try {
             // Do something with the message
@@ -26,6 +30,8 @@ public class BookListener {
 
             BookEvent bookEvent = objectMapper.readValue(jsonPayload, BookEvent.class);
             System.out.println(bookEvent.getAfter().getName());
+
+            bookIndexClient.index(bookEvent.getAfter());
 
             // Acknowledge the message so that it can be deleted by the message broker
             consumer.acknowledge(msg);
